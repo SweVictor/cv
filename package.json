@@ -10,14 +10,21 @@
   "author": "Victor Hagelbäck",
   "license": "MIT",
   "devDependencies": {
+    "del": "^2.0.2",
     "gulp": "^3.9.0",
     "gulp-concat": "^2.6.0",
+    "gulp-inject": "^3.0.0",
+    "gulp-live-server": "0.0.29",
+    "gulp-tsc": "^1.1.4",
+    "gulp-typescript": "^2.9.2",
     "gulp-uglify": "^1.4.2",
     "live-server": "^0.8.2",
+    "run-sequence": "^1.1.4",
+    "stream-series": "^0.1.1",
     "typescript": "^1.6.2"
   },
   "dependencies": {
-    "angular2": "^2.0.0-alpha.45",
+    "angular2": "^2.0.0-alpha.45"
   },
   "repository": {
     "type": "git",
