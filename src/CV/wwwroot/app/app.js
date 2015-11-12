@@ -10,16 +10,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var angular2_1 = require('angular2/angular2');
+var fitText_1 = require('../app/fitText');
 var CV = (function () {
     function CV() {
-        this.title = "CV";
+        this.title = "Victor's CV";
     }
     CV = __decorate([
         angular2_1.Component({
             selector: 'vh-cv'
         }),
         angular2_1.View({
-            template: '<h1>{{title}}</h1>'
+            template: '<h1 fittext>{{title}}</h1>',
+            directives: [fitText_1.FitText]
         }), 
         __metadata('design:paramtypes', [])
     ], CV);
@@ -32,4 +34,3 @@ angular2_1.bootstrap(CV)
 }, function (err) {
     console.error(err);
 });
-//# sourceMappingURL=app.js.map

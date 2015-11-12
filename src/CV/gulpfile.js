@@ -15,6 +15,9 @@ var series = require('stream-series');
 var gls = require('gulp-live-server');
 var runSequence = require('run-sequence');
 var merge = require('merge-stream');
+var tsc = require('gulp-typescript');
+var tsProject = tsc.createProject('tsconfig.json');
+
 
 var bases = {
     app: 'app/',
@@ -23,6 +26,7 @@ var bases = {
 
 var paths = {
     scripts: ['**/*.js'],
+    typescripts: ['**/*.ts'],
     libs: ['node_modules/systemjs/dist/system.src.js', 'node_modules/angular2/bundles/angular2.dev.js'],
     cssLibs: ['node_modules/purecss/build/pure-min.css', 'node_modules/purecss/build/grids-responsive-min.css'],
     styles: ['**/*.css'],
@@ -62,11 +66,15 @@ gulp.task('build.js.dev', function (done) {
     var libs = gulp.src(paths.libs)
 			.pipe(concat('libs.js'))
 			.pipe(gulp.dest(bases.dist));
-    var scripts = gulp.src(paths.scripts, { cwd: bases.app })
-            .pipe(jshint())
-            .pipe(jshint.reporter('default'))
-			.pipe(gulp.dest(bases.dist + 'app/'));
+    var tsResult = gulp.src(paths.typescripts, { cwd: bases.app })
+            .pipe(tsc(tsProject));            
 
+            //.pipe(jshint())
+            //.pipe(jshint.reporter('default'))
+
+    var scripts = tsResult.js
+            //.pipe(sourcemaps.write('.'))
+			.pipe(gulp.dest(bases.dist + 'app'));
     return merge(libs, scripts);
 
 });
