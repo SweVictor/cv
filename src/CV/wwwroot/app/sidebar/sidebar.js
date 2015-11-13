@@ -10,30 +10,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var angular2_1 = require('angular2/angular2');
-var fitText_1 = require('../app/fitText');
-var sidebar_1 = require('../app/sidebar/sidebar');
-var CV = (function () {
-    function CV(title) {
-        title.setTitle("Testietitle");
-        this.title = "Victor's CV";
+var fitText_1 = require('../../app/fitText');
+var Sidebar = (function () {
+    function Sidebar() {
+        console.log("Bootstrapped sidebar");
     }
-    CV = __decorate([
+    Sidebar = __decorate([
         angular2_1.Component({
-            selector: 'vh-cv',
-            bindings: [angular2_1.Title]
-        }),
-        angular2_1.View({
-            template: '<vh-sidebar class="sidebar pure-u-1 pure-u-md-1-4"></vh-sidebar>',
-            directives: [sidebar_1.Sidebar, fitText_1.FitText]
+            selector: 'vh-sidebar',
+            templateUrl: '/app/sidebar/sidebar.html',
+            directives: [fitText_1.FitText]
         }), 
-        __metadata('design:paramtypes', [angular2_1.Title])
-    ], CV);
-    return CV;
+        __metadata('design:paramtypes', [])
+    ], Sidebar);
+    return Sidebar;
 })();
-exports.CV = CV;
-angular2_1.bootstrap(CV)
-    .then(function (app) {
-    console.log('Bootstrap Successful');
-}, function (err) {
-    console.error(err);
-});
+exports.Sidebar = Sidebar;

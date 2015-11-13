@@ -1,18 +1,21 @@
-import {Component, View, Directive, ElementRef, bootstrap} from 'angular2/angular2';
+import {Component, View, Directive, Title, ElementRef, bootstrap} from 'angular2/angular2';
 import {FitText} from '../app/fitText';
+import {Sidebar} from '../app/sidebar/sidebar';
 
 @Component({
-    selector:'vh-cv'
+    selector: 'vh-cv',
+    bindings: [Title]
 })
 @View({
-        template: '<h1 fittext>{{title}}</h1>',
-        directives: [FitText]
+        template: '<vh-sidebar class="sidebar pure-u-1 pure-u-md-1-4"></vh-sidebar>',//'<h1 fittext>{{title}}</h1>',
+        directives: [Sidebar, FitText]
 })
 
 export class CV {
     title:string;
 
-    constructor(){ 
+    constructor(title: Title) { 
+        title.setTitle("Testietitle");
         this.title = "Victor's CV";
     }
 }

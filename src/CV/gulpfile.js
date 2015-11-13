@@ -27,6 +27,7 @@ var bases = {
 var paths = {
     scripts: ['**/*.js'],
     typescripts: ['**/*.ts'],
+    templates: ['**/*.html'],
     libs: ['node_modules/systemjs/dist/system.src.js', 'node_modules/angular2/bundles/angular2.dev.js'],
     cssLibs: ['node_modules/purecss/build/pure-min.css', 'node_modules/purecss/build/grids-responsive-min.css'],
     styles: ['**/*.css'],
@@ -56,6 +57,7 @@ gulp.task('build.dev', function () {
     return runSequence(
       'build.css.dev',
       'build.js.dev',
+      'build.templates.dev',
       'build.index.dev'
     );
 });
@@ -88,6 +90,13 @@ gulp.task('build.css.dev', function () {
 		.pipe(gulp.dest(bases.dist + 'app/'));
 
     return merge(libs, styles);
+});
+
+gulp.task('build.templates.dev', function () {
+    var templates = gulp.src(paths.templates, { cwd: bases.app })
+		.pipe(gulp.dest(bases.dist + 'app/'));
+
+    return templates;
 });
 
 gulp.task('build.index.dev', ['build.js.dev', 'build.css.dev'], function () {

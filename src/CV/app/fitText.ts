@@ -10,23 +10,36 @@
  * Date: 06/05/2015
  */
 
-import {Component, View, Directive, Inject, Attribute, ElementRef, bootstrap} from 'angular2/angular2';
+import {Component, View, Directive, Inject, Input, Attribute, ElementRef, bootstrap} from 'angular2/angular2';
 
 
 @Directive({
     selector: '[fittext]',
-
+    host: {
+        '(window:resize)': 'onResize($event)'
+    }
 })
 export class FitText {
+    element: HTMLElement;
+    parent: HTMLElement;
+
+    compressor: number;
+    loadDelay: number;
+    minFontSize: string;
+    maxFontSize: string;
+    nl: number;
+
+    @Input('fittextMax') fittextMax: string;
+
     constructor(
         @Inject(ElementRef) elementRef: ElementRef,
         @Attribute('fittext') fittext: number,
-        @Attribute('fittextLoadDelay') fittextLoadDelay: string,
+        @Attribute('fittextLoadDelay') fittextLoadDelay: number,
         @Attribute('fittextMin') fittextMin: string,
         @Attribute('fittextMax') fittextMax: string
     ) {
-        console.log(elementRef);
-        var element: HTMLElement = elementRef.nativeElement;
+        console.log(this.fittextMax, fittextMax);
+        this.element = elementRef.nativeElement;
 
         var config = {
             'debounce': false,
@@ -37,28 +50,18 @@ export class FitText {
         };
 
 
-        element.style.display = 'inline-block';
-        element.style.lineHeight = '1';
+        this.element.style.display = 'inline-block';
+        this.element.style.lineHeight = '1';
 
-        var parent = element.parentElement;
-        var compressor = fittext || 1;
-        var loadDelay = fittextLoadDelay || config.loadDelay;
-        var nl = element.querySelectorAll('[fittext-nl],[data-fittext-nl]').length || 1;
-        var minFontSize = fittextMin || config.min || Number.NEGATIVE_INFINITY;
-        var maxFontSize = fittextMax || config.max || Number.POSITIVE_INFINITY;
+        this.parent = this.element.parentElement;
+        this.compressor = fittext || 1;
+        this.loadDelay = fittextLoadDelay || config.loadDelay;
+        this.nl = this.element.querySelectorAll('[fittext-nl],[data-fittext-nl]').length || 1;
+        this.minFontSize = fittextMin || config.min || Number.NEGATIVE_INFINITY;
+        this.maxFontSize = fittextMax || config.max || Number.POSITIVE_INFINITY;
 
-        var resizer = function () {
-            element.style.fontSize = '10px';
-            var ratio = element.offsetHeight / element.offsetWidth / nl;
-            element.style.fontSize = Math.max(
-                Math.min((parent.offsetWidth - 6) * ratio * compressor,
-                    parseFloat(maxFontSize)
-                ),
-                parseFloat(minFontSize)
-            ) + 'px';
-        };
-
-        setTimeout(function () { resizer() }, loadDelay);
+        var self = this;
+        setTimeout(function () { self.onResize(null) }, this.loadDelay);
 
         //scope.$watch(attrs.ngModel, function () { resizer() });
 
@@ -66,6 +69,18 @@ export class FitText {
         //    ? angular.element(window).bind('resize', config.debounce(function () { scope.$apply(resizer) }, config.delay))
         //    : angular.element(window).bind('resize', function () { scope.$apply(resizer) });
 
+    }
+
+    onResize(event: Event) {
+        console.log("resize");
+        this.element.style.fontSize = '10px';
+        var ratio = this.element.offsetHeight / this.element.offsetWidth / this.nl;
+        this.element.style.fontSize = Math.max(
+            Math.min((this.parent.offsetWidth - 6) * ratio * this.compressor,
+                parseFloat(this.maxFontSize)
+            ),
+            parseFloat(this.minFontSize)
+        ) + 'px';
     }
 }
 
