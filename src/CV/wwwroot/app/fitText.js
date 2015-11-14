@@ -25,10 +25,10 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 var angular2_1 = require('angular2/angular2');
 var FitText = (function () {
-    function FitText(elementRef, fittext, fittextLoadDelay, fittextMin) {
-        var fittextMax = this.fittextMax;
-        console.log(this.fittextMax, fittextMax);
+    function FitText(elementRef) {
         this.element = elementRef.nativeElement;
+    }
+    FitText.prototype.afterViewInit = function () {
         var config = {
             'debounce': false,
             'delay': 250,
@@ -39,14 +39,14 @@ var FitText = (function () {
         this.element.style.display = 'inline-block';
         this.element.style.lineHeight = '1';
         this.parent = this.element.parentElement;
-        this.compressor = fittext || 1;
-        this.loadDelay = fittextLoadDelay || config.loadDelay;
+        this.compressor = this.compressor || 1;
+        this.loadDelay = this.loadDelay || config.loadDelay;
         this.nl = this.element.querySelectorAll('[fittext-nl],[data-fittext-nl]').length || 1;
-        this.minFontSize = fittextMin || config.min || Number.NEGATIVE_INFINITY;
-        this.maxFontSize = fittextMax || config.max || Number.POSITIVE_INFINITY;
+        this.minFontSize = this.minFontSize || config.min || Number.NEGATIVE_INFINITY;
+        this.maxFontSize = this.maxFontSize || config.max || Number.POSITIVE_INFINITY;
         var self = this;
         setTimeout(function () { self.onResize(null); }, this.loadDelay);
-    }
+    };
     FitText.prototype.onResize = function (event) {
         console.log("resize");
         this.element.style.fontSize = '10px';
@@ -54,21 +54,27 @@ var FitText = (function () {
         this.element.style.fontSize = Math.max(Math.min((this.parent.offsetWidth - 6) * ratio * this.compressor, parseFloat(this.maxFontSize)), parseFloat(this.minFontSize)) + 'px';
     };
     __decorate([
-        angular2_1.Input('fittextMax'), 
+        angular2_1.Input('fittext-load-delay'), 
+        __metadata('design:type', Number)
+    ], FitText.prototype, "loadDelay");
+    __decorate([
+        angular2_1.Input('fittext-min'), 
         __metadata('design:type', String)
-    ], FitText.prototype, "fittextMax");
+    ], FitText.prototype, "minFontSize");
+    __decorate([
+        angular2_1.Input('fittext-max'), 
+        __metadata('design:type', String)
+    ], FitText.prototype, "maxFontSize");
     FitText = __decorate([
         angular2_1.Directive({
             selector: '[fittext]',
+            properties: ['compressor: fittext'],
             host: {
                 '(window:resize)': 'onResize($event)'
-            }
+            },
         }),
-        __param(0, angular2_1.Inject(angular2_1.ElementRef)),
-        __param(1, angular2_1.Attribute('fittext')),
-        __param(2, angular2_1.Attribute('fittextLoadDelay')),
-        __param(3, angular2_1.Attribute('fittextMin')), 
-        __metadata('design:paramtypes', [angular2_1.ElementRef, Number, Number, String])
+        __param(0, angular2_1.Inject(angular2_1.ElementRef)), 
+        __metadata('design:paramtypes', [angular2_1.ElementRef])
     ], FitText);
     return FitText;
 })();
