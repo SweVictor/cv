@@ -10,30 +10,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var angular2_1 = require('angular2/angular2');
-var sidebar_1 = require('../app/sidebar/sidebar');
-var main_1 = require('../app/main/main');
-var CV = (function () {
-    function CV(title) {
-        title.setTitle("Testietitle");
-        this.title = "Victor's CV";
+var Main = (function () {
+    function Main() {
+        console.log("Bootstrapped main");
     }
-    CV = __decorate([
+    Main = __decorate([
         angular2_1.Component({
-            selector: 'vh-cv',
-            bindings: [angular2_1.Title]
-        }),
-        angular2_1.View({
-            templateUrl: '../app/app.html',
-            directives: [sidebar_1.Sidebar, main_1.Main]
+            selector: 'vh-main',
+            templateUrl: '/app/main/main.html'
         }), 
-        __metadata('design:paramtypes', [angular2_1.Title])
-    ], CV);
-    return CV;
+        __metadata('design:paramtypes', [])
+    ], Main);
+    return Main;
 })();
-exports.CV = CV;
-angular2_1.bootstrap(CV)
-    .then(function (app) {
-    console.log('Bootstrap Successful');
-}, function (err) {
-    console.error(err);
-});
+exports.Main = Main;
