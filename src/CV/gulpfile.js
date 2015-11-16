@@ -11,6 +11,7 @@ var del = require('del'); // rm -rf
 var concat = require('gulp-concat');
 var inject = require('gulp-inject');
 var jshint = require('gulp-jshint');
+var less = require('gulp-less');
 var series = require('stream-series');
 var gls = require('gulp-live-server');
 var runSequence = require('run-sequence');
@@ -30,7 +31,7 @@ var paths = {
     templates: ['**/*.html'],
     libs: ['node_modules/systemjs/dist/system.src.js', 'node_modules/angular2/bundles/angular2.dev.js'],
     cssLibs: ['node_modules/purecss/build/pure-min.css', 'node_modules/purecss/build/grids-responsive-min.css'],
-    styles: ['**/*.css'],
+    styles: ['**/*.less'],
     html: ['index.html', '404.html'],
     images: ['images/**/*.png'],
     extras: ['crossdomain.xml', 'humans.txt', 'manifest.appcache', 'robots.txt', 'favicon.ico'],
@@ -55,7 +56,7 @@ gulp.task('start.dev', function () {
 
 gulp.task('build.dev', function () {
     return runSequence(
-      'build.css.dev',
+      'build.styles.dev',
       'build.js.dev',
       'build.templates.dev',
       'build.index.dev'
@@ -81,12 +82,13 @@ gulp.task('build.js.dev', function (done) {
 
 });
 
-gulp.task('build.css.dev', function () {
+gulp.task('build.styles.dev', function () {
     var libs = gulp.src(paths.cssLibs)
 		.pipe(concat('libs.css'))
 		.pipe(gulp.dest(bases.dist));
 
     var styles = gulp.src(paths.styles, { cwd: bases.app })
+        .pipe(less())
 		.pipe(gulp.dest(bases.dist + 'app/'));
 
     return merge(libs, styles);
